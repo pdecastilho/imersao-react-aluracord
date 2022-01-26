@@ -1,4 +1,5 @@
 import { Box, Button, Text, TextField, Image } from "@skynexui/components";
+import React from "react";
 import appConfig from "../config.json";
 
 function GlobalStyle() {
@@ -62,7 +63,8 @@ function Titulo(props) {
 // export default HomePage
 
 export default function PaginaInicial() {
-  const username = "pdecastilho";
+  // const username = "pdecastilho";
+  const [username, setUsername] = React.useState("pdecastilho");
 
   return (
     <>
@@ -122,6 +124,13 @@ export default function PaginaInicial() {
               {appConfig.name}
             </Text>
 
+            {/*<input
+              type="text"
+              value={username}
+              onChange={function (event) {
+                setUsername(event.target.value);
+              }}
+            />*/}
             <TextField
               fullWidth
               textFieldColors={{
@@ -131,6 +140,10 @@ export default function PaginaInicial() {
                   mainColorHighlight: appConfig.theme.colors.primary[500],
                   backgroundColor: appConfig.theme.colors.neutrals[800],
                 },
+              }}
+              value={username}
+              onChange={function (event) {
+                setUsername(event.target.value);
               }}
             />
             <Button
