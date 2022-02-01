@@ -1,6 +1,7 @@
 import { Box, Text, TextField, Image, Button } from "@skynexui/components";
 import React from "react";
 import appConfig from "../config.json";
+import { useRouter } from "next/router";
 import { createClient } from "@supabase/supabase-js";
 
 const SUPABASE_ANON_KEY =
@@ -9,6 +10,8 @@ const SUPABASE_URL = "https://uwurbrpkulyutmghjyen.supabase.co";
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 export default function ChatPage() {
+  const router = useRouter();
+  const username = router.query.username;
   const [draft, setDraft] = React.useState("");
   const [messageList, setMessageList] = React.useState([]);
 
@@ -24,7 +27,7 @@ export default function ChatPage() {
 
   function handleNewMessage(newMessage) {
     const message = {
-      de: "pdecastilho",
+      de: username,
       texto: newMessage,
     };
 
