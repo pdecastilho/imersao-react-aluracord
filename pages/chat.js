@@ -8,22 +8,6 @@ const SUPABASE_ANON_KEY =
 const SUPABASE_URL = "https://uwurbrpkulyutmghjyen.supabase.co";
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-/*
-  fetch(`${SUPABASE_URL}/rest/v1/messages?select=*`, {
-    headers: {
-      "Content-Type": "application/json",
-      apikey: SUPABASE_ANON_KEY,
-      Authorization: "Bearer " + SUPABASE_ANON_KEY,
-    },
-  })
-  .then((res) => {
-    return res.json();
-  })
-  .then((response) => {
-    console.log(response);
-  });
-*/
-
 export default function ChatPage() {
   const [draft, setDraft] = React.useState("");
   const [messageList, setMessageList] = React.useState([]);
@@ -32,19 +16,25 @@ export default function ChatPage() {
     supabaseClient
       .from("messages")
       .select("*")
+      .order("id", { ascending: false })
       .then(({ data }) => {
-        console.log(data);
         setMessageList(data);
       });
   }, []);
 
   function handleNewMessage(newMessage) {
     const message = {
-      id: messageList.length + 1,
       de: "pdecastilho",
       texto: newMessage,
     };
-    setMessageList([message, ...messageList]);
+
+    supabaseClient
+      .from("messages")
+      .insert([message])
+      .then(({ data }) => {
+        setMessageList([data[0], ...messageList]);
+      });
+
     setDraft("");
   }
   return (
@@ -163,7 +153,6 @@ function Header() {
 }
 
 function MessageList(props) {
-  console.log("MessageList", props);
   return (
     <Box
       tag="ul"
