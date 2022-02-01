@@ -8,13 +8,6 @@ const SUPABASE_ANON_KEY =
 const SUPABASE_URL = "https://uwurbrpkulyutmghjyen.supabase.co";
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-supabaseClient
-  .from("messages")
-  .select("*")
-  .then((dados) => {
-    console.log(dados);
-  });
-
 /*
   fetch(`${SUPABASE_URL}/rest/v1/messages?select=*`, {
     headers: {
@@ -34,6 +27,17 @@ supabaseClient
 export default function ChatPage() {
   const [draft, setDraft] = React.useState("");
   const [messageList, setMessageList] = React.useState([]);
+
+  React.useEffect(() => {
+    supabaseClient
+      .from("messages")
+      .select("*")
+      .then(({ data }) => {
+        console.log(data);
+        setMessageList(data);
+      });
+  }, []);
+
   function handleNewMessage(newMessage) {
     const message = {
       id: messageList.length + 1,
